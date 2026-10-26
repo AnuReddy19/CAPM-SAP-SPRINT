@@ -75,6 +75,16 @@ annotate service.InvoiceSrv with @(
     ],
     UI.LineItem : [
         {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'PSAService.issueInvoice',
+            Label : 'Issue Invoice',
+        },
+        {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'PSAService.markInvoicePaid',
+            Label : 'Mark as Paid',
+        },
+        {
             $Type : 'UI.DataField',
             Label : 'NET_AMOUNT',
             Value : NET_AMOUNT,

@@ -139,10 +139,11 @@ sap.ui.define([
             description: "Review project and budget alerts.",
             entity: "AlertSrv",
             columns: [
-                ["TITLE", "Alert"],
+                ["THRESHOLD", "Threshold %"],
                 ["MESSAGE", "Details"],
+                ["CONSUMED_PERCENT", "Consumed %"],
                 ["CRITICALITY", "Criticality"],
-                ["CREATED_AT", "Created"]
+                ["createdAt", "Created"]
             ]
         }
     };
@@ -355,7 +356,7 @@ sap.ui.define([
 
                         try {
                             var operation = this._service.bindContext(
-                                "/ApprovalSrv(" + item.id + ")/approveTimesheet(...)"
+                                "/ApprovalSrv(" + item.id + ")/PSAService.approveTimesheet(...)"
                             );
                             await operation.execute();
                             MessageToast.show("Timesheet approved.");
@@ -423,7 +424,7 @@ sap.ui.define([
 
                         try {
                             var operation = this._service.bindContext(
-                                "/ApprovalSrv(" + item.id + ")/rejectTimesheet(...)"
+                                "/ApprovalSrv(" + item.id + ")/PSAService.rejectTimesheet(...)"
                             );
                             operation.setParameter("reason", reason);
                             await operation.execute();

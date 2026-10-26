@@ -471,7 +471,7 @@
 <Column id="projectBudgetBurnColumn">
     <Text
         id="projectBudgetBurnColumnLabel"
-        text="Budget Burn"/>
+        text="Hours Burn"/>
 </Column>
 
 
@@ -524,13 +524,13 @@
 
         <Text
             id="projectBudgetBurnText"
-            text="{viewModel>budgetBurnText}"/>
+            text="{viewModel>hoursBurnText}"/>
 
         <ProgressIndicator
             id="projectBudgetBurnIndicator"
-            percentValue="{viewModel>budgetBurn}"
+            percentValue="{viewModel>hoursBurn}"
             displayValue=""
-            state="{viewModel>budgetBurnState}"
+            state="{viewModel>hoursBurnState}"
             width="100%"/>
     </VBox>
 

@@ -357,14 +357,25 @@ const ensureAdmin = req => {
       fail('A timesheet already exists for this employee and week.');
     }
 
-    const [sheet] = await tx.run(
+    // cds.ql has no INSERT...returning(), so generate the key up front.
+    const sheet = {
+      NODE_KEY: cds.utils.uuid(),
+      WEEK_START: start,
+      WEEK_END: end,
+      TOTAL_HOURS: 0,
+      STATUS: 'Draft',
+      EMPLOYEE_NODE_KEY: employee.NODE_KEY
+    };
+
+    await tx.run(
       INSERT.into(TimesheetSrv).entries({
+        NODE_KEY: sheet.NODE_KEY,
         WEEK_START: start,
         WEEK_END: end,
         TOTAL_HOURS: 0,
         STATUS: 'Draft',
         EMPLOYEE: { NODE_KEY: employee.NODE_KEY }
-      }).returning('*')
+      })
     );
 
     const rows = Array.isArray(entriesInput) ? entriesInput : [];
@@ -643,8 +654,11 @@ if (task.STATUS === "Done") {
     const invoiceNo =
       `${yearPrefix}${String(nextNumber).padStart(4, '0')}`;
 
-    const [invoice] = await tx.run(
+    const invoiceID = cds.utils.uuid();
+
+    await tx.run(
       INSERT.into(InvoiceSrv).entries({
+        NODE_KEY: invoiceID,
         INVOICE_NO: invoiceNo,
         PERIOD_FROM: from,
         PERIOD_TO: to,
@@ -657,18 +671,18 @@ if (task.STATUS === "Done") {
         GROSS_AMOUNT: gross,
         CURRENCY: budget.CURRENCY_CODE || 'INR',
         PROJECT: { NODE_KEY: projectID }
-      }).returning('*')
+      })
     );
 
     for (const entry of eligible) {
       await tx.run(
         UPDATE(TimesheetEntrySrv)
-          .set({ INVOICE: { NODE_KEY: invoice.NODE_KEY } })
+          .set({ INVOICE_NODE_KEY: invoiceID })
           .where({ NODE_KEY: entry.NODE_KEY })
       );
     }
 
-    return invoice;
+    return getOne(tx, InvoiceSrv, invoiceID, 'Invoice');
   }
     // Calculated virtual fields used by Fiori Elements.
   this.after('READ', EmployeeSrv, rows => {
@@ -800,7 +814,9 @@ this.after('READ', TaskSrv, async (rows, req) => {
     ensureSignedIn(req);
 
     const employee = await getEmployeeForUser(req);
-    const roles = req.user?.roles || [];
+    // CAP stores roles as an object map; WhoAmI.scopes is a string array.
+    const roleMap = req.user?.roles || {};
+    const roles = Array.isArray(roleMap) ? roleMap : Object.keys(roleMap);
 
     return {
       user: req.user?.id || '',
@@ -1382,6 +1398,7 @@ this.after('READ', TaskSrv, async (rows, req) => {
       }
 
       const entry = {
+        NODE_KEY: cds.utils.uuid(),
         WORK_DATE: workDate,
         HOURS: hours,
         IS_BILLABLE: x.IS_BILLABLE ?? true,
@@ -1390,11 +1407,11 @@ this.after('READ', TaskSrv, async (rows, req) => {
         PARENT: { NODE_KEY: sheetID }
       };
 
-      const [created] = await tx.run(
-        INSERT.into(TimesheetEntrySrv).entries(entry).returning('*')
+      await tx.run(
+        INSERT.into(TimesheetEntrySrv).entries(entry)
       );
 
-      createdEntries.push(created);
+      createdEntries.push(entry);
       affectedSheetIDs.add(sheetID);
     }
 
@@ -1526,10 +1543,11 @@ this.on("createTimesheet", async req => {
     async req => {
       ensureSignedIn(req);
 
+      // Admins do not need a linked employee record.
+      if (isAdmin(req)) return;
+
       const tx = txFor(req);
       const employee = await employeeRequired(req, tx);
-
-      if (isAdmin(req)) return;
 
       if (req.event === 'CREATE') {
         req.data.EMPLOYEE = { NODE_KEY: employee.NODE_KEY };
@@ -1574,21 +1592,32 @@ this.on("createTimesheet", async req => {
       ensureSignedIn(req);
 
       const tx = txFor(req);
-      const parentID =
+      let parentID =
         req.data.PARENT_NODE_KEY || req.data.PARENT?.NODE_KEY;
 
       if (req.event === 'CREATE' && !parentID) {
         fail('Timesheet parent is required.');
       }
 
-      const sheet = parentID
-        ? await getOne(tx, TimesheetSrv, parentID, 'Timesheet')
-        : await getOne(
-            tx,
-            TimesheetSrv,
-            req.data.PARENT_NODE_KEY,
-            'Timesheet'
-          );
+      // PATCH and DELETE requests only carry the entry key,
+      // so look the parent timesheet up from the stored entry.
+      if (!parentID) {
+        const existing = await getOne(
+          tx,
+          TimesheetEntrySrv,
+          req.data.NODE_KEY || req.params?.[0]?.NODE_KEY,
+          'Timesheet entry'
+        );
+
+        parentID = existing.PARENT_NODE_KEY;
+      }
+
+      // Remembered for the after-handler that recomputes totals.
+      req.parentTimesheetID = parentID;
+
+      const sheet = await getOne(
+        tx, TimesheetSrv, parentID, 'Timesheet'
+      );
 
       if (!isAdmin(req)) {
         const employee = await employeeRequired(req, tx);
@@ -1605,7 +1634,7 @@ this.on("createTimesheet", async req => {
       if (req.event !== 'DELETE') {
         const hours = Number(req.data.HOURS ?? 8);
 
-        if (hours < 0.25 || hours > 24) {
+        if (!Number.isFinite(hours) || hours < 0.25 || hours > 24) {
           fail('Entry hours must be between 0.25 and 24.');
         }
 
@@ -1627,18 +1656,18 @@ this.on("createTimesheet", async req => {
     ensureSignedIn(req);
 
     const tx = txFor(req);
-    const employee = await employeeRequired(req, tx);
     const id = req.params?.[0]?.NODE_KEY || req.data.NODE_KEY;
 
     const sheet = await getOne(
       tx, TimesheetSrv, id, 'Timesheet'
     );
 
-    if (
-      !isAdmin(req) &&
-      sheet.EMPLOYEE_NODE_KEY !== employee.NODE_KEY
-    ) {
-      fail('You can only submit your own timesheets.', 403);
+    if (!isAdmin(req)) {
+      const employee = await employeeRequired(req, tx);
+
+      if (sheet.EMPLOYEE_NODE_KEY !== employee.NODE_KEY) {
+        fail('You can only submit your own timesheets.', 403);
+      }
     }
 
     if (!['Draft', 'Rejected'].includes(sheet.STATUS)) {
@@ -2155,6 +2184,7 @@ this.on("createTimesheet", async req => {
     async (_, req) => {
       const tx = txFor(req);
       const id =
+        req.parentTimesheetID ||
         req.data.PARENT_NODE_KEY || req.data.PARENT?.NODE_KEY;
 
       if (!id) return;

@@ -40,6 +40,16 @@ annotate service.ApprovalSrv with @(
     ],
     UI.LineItem : [
         {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'PSAService.approveTimesheet',
+            Label : 'Approve',
+        },
+        {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'PSAService.rejectTimesheet',
+            Label : 'Reject',
+        },
+        {
             $Type : 'UI.DataField',
             Label : 'WEEK_START',
             Value : WEEK_START,

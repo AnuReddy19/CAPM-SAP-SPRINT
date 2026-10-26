@@ -528,8 +528,9 @@ sap.ui.define([
                         try {
                             var model = timesheetContext.getModel();
 
+                            // Bound actions must use the namespace-qualified name.
                             actionBinding = model.bindContext(
-                                "submitTimesheet(...)",
+                                "PSAService.submitTimesheet(...)",
                                 timesheetContext
                             );
 

@@ -128,11 +128,12 @@
   "name": "sap.fe.templates.ObjectPage",
   "options": {
     "settings": {
+      "contextPath": "/EmployeeSrv",
       "controlConfiguration": {
        "TIMESHEETS/@com.sap.vocabularies.UI.v1.LineItem#EmployeeTimesheets": {
           "actions": {
             "SubmitTimesheet": {
-              "text": "Submit Timesheet TEST",
+              "text": "Submit Timesheet",
               "press": "psaa.employees.ext.controller.Timesheet.onSubmitSelectedTimesheet",
               "visible": true,
               "enabled": true

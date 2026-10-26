@@ -439,10 +439,11 @@ _openProjectDetails: function (project) {
 
     var projectId = encodeURIComponent(project.id);
 
+    // ProjectSrv is draft-enabled, so its key also includes IsActiveEntity.
     window.location.href =
-        "/psaa.projects/index.html#/ProjectSrv(" +
+        "/psaa.projects/index.html#/ProjectSrv(NODE_KEY=" +
         projectId +
-        ")";
+        ",IsActiveEntity=true)";
 },
 
         // ==========================================
