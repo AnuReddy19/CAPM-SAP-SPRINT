@@ -1,0 +1,617 @@
+###
+GET http://localhost:4004/psa/
+
+
+
+### Create Clients
+POST http://localhost:4004/psa/createClients
+Content-Type: application/json
+
+{
+  "clients": [
+    {
+      "CLIENT_NAME": "Apex Technologies",
+      "CLIENT_STATUS": "ACTIVE",
+      "CONTACT_PERSON": "Ravi Kumar",
+      "EMAIL": "ravi.kumar@example.com",
+      "PHONE": "9876501001",
+      "STREET": "MG Road",
+      "BUILDING": "Apex Tower",
+      "CITY": "Hyderabad",
+      "POSTAL_CODE": "500001",
+      "COUNTRY": "India"
+    },
+    {
+      "CLIENT_NAME": "BlueSky Solutions",
+      "CLIENT_STATUS": "ACTIVE",
+      "CONTACT_PERSON": "Priya Sharma",
+      "EMAIL": "priya.sharma@example.com",
+      "PHONE": "9876501002",
+      "STREET": "HITEC City Road",
+      "BUILDING": "BlueSky Plaza",
+      "CITY": "Hyderabad",
+      "POSTAL_CODE": "500081",
+      "COUNTRY": "India"
+    },
+    {
+      "CLIENT_NAME": "Nova Digital",
+      "CLIENT_STATUS": "ACTIVE",
+      "CONTACT_PERSON": "Arjun Rao",
+      "EMAIL": "arjun.rao@example.com",
+      "PHONE": "9876501003",
+      "STREET": "Whitefield Main Road",
+      "BUILDING": "Nova Business Centre",
+      "CITY": "Bengaluru",
+      "POSTAL_CODE": "560066",
+      "COUNTRY": "India"
+    }
+  ]
+}
+
+
+
+### Create Employees
+POST http://localhost:4004/psa/createEmployees
+Content-Type: application/json
+
+{
+  "employees": [
+    {
+      "FIRST_NAME": "Ravi",
+      "LAST_NAME": "Kumar",
+      "EMAIL": "ravi.kumar@example.com",
+      "PHONE_NUMBER": "9876501001",
+      "JOB_TITLE": "Project Manager",
+      "CURRENCY_CODE": "INR",
+      "HOURLY_RATE": 1200,
+      "IS_MANAGER": true,
+      "IS_ACTIVE": true
+    },
+    {
+      "FIRST_NAME": "Priya",
+      "LAST_NAME": "Sharma",
+      "EMAIL": "priya.sharma@example.com",
+      "PHONE_NUMBER": "9876501002",
+      "JOB_TITLE": "Senior Developer",
+      "CURRENCY_CODE": "INR",
+      "HOURLY_RATE": 1000,
+      "IS_MANAGER": false,
+      "IS_ACTIVE": true
+    },
+    {
+      "FIRST_NAME": "Arjun",
+      "LAST_NAME": "Rao",
+      "EMAIL": "arjun.rao@example.com",
+      "PHONE_NUMBER": "9876501003",
+      "JOB_TITLE": "Developer",
+      "CURRENCY_CODE": "INR",
+      "HOURLY_RATE": 800,
+      "IS_MANAGER": false,
+      "IS_ACTIVE": true
+    }
+  ]
+}
+
+
+
+### Get Clients
+GET http://localhost:4004/psa/ClientSrv?$select=NODE_KEY,CLIENT_NAME
+
+### Get Employees
+GET http://localhost:4004/psa/EmployeeSrv?$select=NODE_KEY,FIRST_NAME,LAST_NAME
+
+
+
+### Create Projects
+POST http://localhost:4004/psa/createProjects
+Content-Type: application/json
+
+{
+  "projects": [
+    {
+      "PROJECT_CODE": "PSA-001",
+      "PROJECT_NAME": "Client Portal Development",
+      "PROJECT_STATUS": "IN_PROGRESS",
+      "BILLING_TYPE": "TM",
+      "START_DATE": "2026-10-01",
+      "END_DATE": "2027-03-31",
+      "PLANNED_HOURS": 1200,
+      "CLIENT_ID": "d7af379c-7424-4b3f-8d42-689d8d56853f",
+      "MANAGER_ID": "1360343d-1c2d-4466-a93b-f13df914a81f"
+    },
+    {
+      "PROJECT_CODE": "PSA-002",
+      "PROJECT_NAME": "Digital Transformation",
+      "PROJECT_STATUS": "IN_PROGRESS",
+      "BILLING_TYPE": "TM",
+      "START_DATE": "2026-10-15",
+      "END_DATE": "2027-04-30",
+      "PLANNED_HOURS": 900,
+      "CLIENT_ID": "1167da0c-793d-41be-8b33-d0ade97e5ba0",
+      "MANAGER_ID": "1360343d-1c2d-4466-a93b-f13df914a81f"
+    },
+    {
+      "PROJECT_CODE": "PSA-003",
+      "PROJECT_NAME": "Analytics Platform",
+      "PROJECT_STATUS": "DRAFT",
+      "BILLING_TYPE": "FIXED",
+      "START_DATE": "2026-11-01",
+      "END_DATE": "2027-05-31",
+      "PLANNED_HOURS": 700,
+      "CLIENT_ID": "15d91eea-cb70-42f2-97fb-5f759eb8a4f9",
+      "MANAGER_ID": "1360343d-1c2d-4466-a93b-f13df914a81f"
+    }
+  ]
+}
+
+
+### Verify Projects
+GET http://localhost:4004/psa/ProjectSrv?$select=NODE_KEY,PROJECT_CODE,PROJECT_NAME
+
+
+
+### Create Budgets
+POST http://localhost:4004/psa/createBudgets
+Content-Type: application/json
+
+{
+  "budgets": [
+    {
+      "BUDGET_AMOUNT": 1500000,
+      "BILLING_RATE": 1200,
+      "RETAINER_FEE": 0,
+      "CURRENCY_CODE": "INR",
+      "PROJECT_ID": "25a9d70c-d2ec-43bf-a629-ed16fdd62f28"
+    },
+    {
+      "BUDGET_AMOUNT": 2000000,
+      "BILLING_RATE": 1000,
+      "RETAINER_FEE": 0,
+      "CURRENCY_CODE": "INR",
+      "PROJECT_ID": "2e948f7e-8f23-4179-b9e1-90dcda078985"
+    },
+    {
+      "BUDGET_AMOUNT": 1200000,
+      "BILLING_RATE": 1500,
+      "RETAINER_FEE": 50000,
+      "CURRENCY_CODE": "INR",
+      "PROJECT_ID": "77baa8ff-fe69-40a3-bfbc-6f57ff72d203"
+    }
+  ]
+}
+
+
+### Verify Budgets
+GET http://localhost:4004/psa/BudgetSrv
+
+
+
+### Create Milestones
+POST http://localhost:4004/psa/createMilestones
+Content-Type: application/json
+
+{
+  "milestones": [
+    {
+      "MILESTONE_NAME": "Requirements and Planning",
+      "START_DATE": "2026-10-01",
+      "END_DATE": "2026-10-31",
+      "PROJECT_ID": "25a9d70c-d2ec-43bf-a629-ed16fdd62f28"
+    },
+    {
+      "MILESTONE_NAME": "Development and Integration",
+      "START_DATE": "2026-11-01",
+      "END_DATE": "2027-01-31",
+      "PROJECT_ID": "25a9d70c-d2ec-43bf-a629-ed16fdd62f28"
+    },
+    {
+      "MILESTONE_NAME": "Testing and Deployment",
+      "START_DATE": "2027-02-01",
+      "END_DATE": "2027-03-31",
+      "PROJECT_ID": "25a9d70c-d2ec-43bf-a629-ed16fdd62f28"
+    },
+    {
+      "MILESTONE_NAME": "Business Analysis",
+      "START_DATE": "2026-10-15",
+      "END_DATE": "2026-11-15",
+      "PROJECT_ID": "2e948f7e-8f23-4179-b9e1-90dcda078985"
+    },
+    {
+      "MILESTONE_NAME": "Solution Implementation",
+      "START_DATE": "2026-11-16",
+      "END_DATE": "2027-02-28",
+      "PROJECT_ID": "2e948f7e-8f23-4179-b9e1-90dcda078985"
+    },
+    {
+      "MILESTONE_NAME": "Analytics Design",
+      "START_DATE": "2026-11-01",
+      "END_DATE": "2026-12-15",
+      "PROJECT_ID": "77baa8ff-fe69-40a3-bfbc-6f57ff72d203"
+    },
+    {
+      "MILESTONE_NAME": "Platform Delivery",
+      "START_DATE": "2026-12-16",
+      "END_DATE": "2027-05-31",
+      "PROJECT_ID": "77baa8ff-fe69-40a3-bfbc-6f57ff72d203"
+    }
+  ]
+}
+
+
+
+### Verify Milestones
+GET http://localhost:4004/psa/MilestoneSrv
+
+
+
+### Create Tasks
+POST http://localhost:4004/psa/createTasks
+Content-Type: application/json
+
+{
+  "tasks": [
+    {
+      "TASK_NAME": "Gather Business Requirements",
+      "STATUS": "IN_PROGRESS",
+      "ESTIMATED_HOURS": 80,
+      "MILESTONE_ID": "11034541-5b6d-4145-9dc2-f9040cd20e72",
+      "ASSIGNEE_ID": "45ce660d-2ecb-4fa3-8887-0a81121a2bd5"
+    },
+    {
+      "TASK_NAME": "Prepare Technical Design",
+      "STATUS": "OPEN",
+      "ESTIMATED_HOURS": 60,
+      "MILESTONE_ID": "11034541-5b6d-4145-9dc2-f9040cd20e72",
+      "ASSIGNEE_ID": "dfc95aed-a852-406e-b98f-751b30118b2c"
+    },
+    {
+      "TASK_NAME": "Develop Client Portal",
+      "STATUS": "IN_PROGRESS",
+      "ESTIMATED_HOURS": 200,
+      "MILESTONE_ID": "3ec3188f-0937-4e95-944c-f769807474e6",
+      "ASSIGNEE_ID": "45ce660d-2ecb-4fa3-8887-0a81121a2bd5"
+    },
+    {
+      "TASK_NAME": "Perform Integration",
+      "STATUS": "OPEN",
+      "ESTIMATED_HOURS": 100,
+      "MILESTONE_ID": "7d08c770-a6ae-4761-bca5-c3ab6de11a18",
+      "ASSIGNEE_ID": "dfc95aed-a852-406e-b98f-751b30118b2c"
+    },
+    {
+      "TASK_NAME": "Analyze Business Processes",
+      "STATUS": "IN_PROGRESS",
+      "ESTIMATED_HOURS": 120,
+      "MILESTONE_ID": "f5ac501b-c32d-4059-b5dc-dd46bb20c19e",
+      "ASSIGNEE_ID": "dfc95aed-a852-406e-b98f-751b30118b2c"
+    },
+    {
+      "TASK_NAME": "Implement Digital Solution",
+      "STATUS": "OPEN",
+      "ESTIMATED_HOURS": 180,
+      "MILESTONE_ID": "86315555-dc13-43b9-8592-1c3ae42df1e1",
+      "ASSIGNEE_ID": "45ce660d-2ecb-4fa3-8887-0a81121a2bd5"
+    },
+    {
+      "TASK_NAME": "Design Analytics Architecture",
+      "STATUS": "IN_PROGRESS",
+      "ESTIMATED_HOURS": 100,
+      "MILESTONE_ID": "bcf0bd14-b598-4fd6-a32d-a5da9c711738",
+      "ASSIGNEE_ID": "dfc95aed-a852-406e-b98f-751b30118b2c"
+    },
+    {
+      "TASK_NAME": "Deliver Analytics Platform",
+      "STATUS": "OPEN",
+      "ESTIMATED_HOURS": 200,
+      "MILESTONE_ID": "80f9a28d-26db-4ca1-97e6-52e8fdfa5d2b",
+      "ASSIGNEE_ID": "45ce660d-2ecb-4fa3-8887-0a81121a2bd5"
+    }
+  ]
+}
+
+
+
+### Verify Tasks
+GET http://localhost:4004/psa/TaskSrv
+
+
+
+### Create Timesheets
+POST http://localhost:4004/psa/createTimesheets
+Content-Type: application/json
+
+{
+  "timesheets": [
+    {
+      "WEEK_START": "2026-10-19",
+      "WEEK_END": "2026-10-25",
+      "EMPLOYEE_ID": "1360343d-1c2d-4466-a93b-f13df914a81f"
+    },
+    {
+      "WEEK_START": "2026-10-19",
+      "WEEK_END": "2026-10-25",
+      "EMPLOYEE_ID": "45ce660d-2ecb-4fa3-8887-0a81121a2bd5"
+    },
+    {
+      "WEEK_START": "2026-10-19",
+      "WEEK_END": "2026-10-25",
+      "EMPLOYEE_ID": "dfc95aed-a852-406e-b98f-751b30118b2c"
+    }
+  ]
+}
+
+
+
+### Verify Timesheets
+GET http://localhost:4004/psa/TimesheetSrv
+
+
+
+
+### Create Timesheet Entries
+POST http://localhost:4004/psa/createTimesheetEntries
+Content-Type: application/json
+
+{
+  "entries": [
+    {
+      "WORK_DATE": "2026-10-19",
+      "HOURS": 8,
+      "IS_BILLABLE": true,
+      "NOTES": "Business requirements gathering",
+      "TASK_ID": "2109abe2-cbe6-4830-b141-be12729d3b23",
+      "PARENT_ID": "f0602708-7917-4d62-9248-977d55e5803d"
+    },
+    {
+      "WORK_DATE": "2026-10-20",
+      "HOURS": 7,
+      "IS_BILLABLE": true,
+      "NOTES": "Technical design preparation",
+      "TASK_ID": "4101a7da-8722-45f3-8f6e-758a7b6b3da2",
+      "PARENT_ID": "8b652f6f-ecd4-44df-ba4d-ebcb3f6c0452"
+    },
+    {
+      "WORK_DATE": "2026-10-19",
+      "HOURS": 8,
+      "IS_BILLABLE": true,
+      "NOTES": "Client portal development",
+      "TASK_ID": "6c8a8ef0-26f2-4714-a87b-575946d90639",
+      "PARENT_ID": "f0602708-7917-4d62-9248-977d55e5803d"
+    },
+    {
+      "WORK_DATE": "2026-10-20",
+      "HOURS": 6,
+      "IS_BILLABLE": true,
+      "NOTES": "Digital solution implementation",
+      "TASK_ID": "65c8e3a6-5e09-435d-a1cb-78ca18939494",
+      "PARENT_ID": "f0602708-7917-4d62-9248-977d55e5803d"
+    },
+    {
+      "WORK_DATE": "2026-10-19",
+      "HOURS": 8,
+      "IS_BILLABLE": true,
+      "NOTES": "Business process analysis",
+      "TASK_ID": "b7bd770a-33e6-4f0a-985e-82d3fc536f42",
+      "PARENT_ID": "8b652f6f-ecd4-44df-ba4d-ebcb3f6c0452"
+    },
+    {
+      "WORK_DATE": "2026-10-20",
+      "HOURS": 7,
+      "IS_BILLABLE": true,
+      "NOTES": "Analytics architecture design",
+      "TASK_ID": "d239482b-b8e3-44b0-b5f5-885e676a6e33",
+      "PARENT_ID": "8b652f6f-ecd4-44df-ba4d-ebcb3f6c0452"
+    }
+  ]
+}
+
+
+
+### Verify Timesheet Entries
+GET http://localhost:4004/psa/TimesheetEntrySrv
+
+
+
+### Verify Timesheet Totals
+GET http://localhost:4004/psa/TimesheetSrv?$select=NODE_KEY,EMPLOYEE_NODE_KEY,WEEK_START,WEEK_END,TOTAL_HOURS,STATUS
+
+
+### Verify Timesheet Totals
+GET http://localhost:4004/psa/TimesheetSrv?$select=NODE_KEY,EMPLOYEE_NODE_KEY,TOTAL_HOURS,STATUS
+
+
+### Check Priya's Timesheet Entries
+GET http://localhost:4004/psa/TimesheetEntrySrv?$filter=PARENT_NODE_KEY eq f0602708-7917-4d62-9248-977d55e5803d&$select=NODE_KEY,HOURS,PARENT_NODE_KEY
+
+
+### Recalculate existing timesheet totals
+POST http://localhost:4004/psa/recalculateTimesheetTotals
+Content-Type: application/json
+
+{}
+
+
+### Verify timesheet totals
+GET http://localhost:4004/psa/TimesheetSrv?$select=NODE_KEY,EMPLOYEE_NODE_KEY,TOTAL_HOURS,STATUS
+
+
+### Verify all timesheet entries
+GET http://localhost:4004/psa/TimesheetEntrySrv?$select=NODE_KEY,WORK_DATE,HOURS,NOTES,PARENT_NODE_KEY,TASK_NODE_KEY&$orderby=WORK_DATE
+
+
+### Check approval service metadata
+GET http://localhost:4004/psa/$metadata
+
+### Submit Priya's timesheet
+POST http://localhost:4004/psa/TimesheetSrv(NODE_KEY=f0602708-7917-4d62-9248-977d55e5803d,IsActiveEntity=true)/PSAService.submitTimesheet
+Content-Type: application/json
+
+{}
+
+### Check current user identity
+GET http://localhost:4004/psa/whoAmI
+
+
+### Invoice 1 - PSA-001
+POST http://localhost:4004/psa/InvoiceSrv
+Content-Type: application/json
+
+{
+  "INVOICE_NO": "INV-2026-001",
+  "PERIOD_FROM": "2026-10-01",
+  "PERIOD_TO": "2026-10-15",
+  "INVOICE_DATE": "2026-10-20",
+  "DUE_DATE": "2026-11-19",
+  "BILLABLE_HOURS": 40,
+  "NET_AMOUNT": 48000,
+  "TAX_AMOUNT": 8640,
+  "GROSS_AMOUNT": 56640,
+  "CURRENCY": "INR",
+  "STATUS": "Issued",
+  "PROJECT_NODE_KEY": "25a9d70c-d2ec-43bf-a629-ed16fdd62f28"
+}
+
+### Invoice 2 - PSA-002
+POST http://localhost:4004/psa/InvoiceSrv
+Content-Type: application/json
+
+{
+  "INVOICE_NO": "INV-2026-002",
+  "PERIOD_FROM": "2026-10-01",
+  "PERIOD_TO": "2026-10-15",
+  "INVOICE_DATE": "2026-10-21",
+  "DUE_DATE": "2026-11-20",
+  "BILLABLE_HOURS": 30,
+  "NET_AMOUNT": 30000,
+  "TAX_AMOUNT": 5400,
+  "GROSS_AMOUNT": 35400,
+  "CURRENCY": "INR",
+  "STATUS": "Draft",
+  "PROJECT_NODE_KEY": "2e948f7e-8f23-4179-b9e1-90dcda078985"
+}
+
+
+
+### Alert 1 - PSA-001
+POST http://localhost:4004/psa/AlertSrv
+Content-Type: application/json
+
+{
+  "THRESHOLD": 75,
+  "CONSUMED_PERCENT": 80,
+  "MESSAGE": "Client Portal Development has exceeded 75% of its budget.",
+  "PROJECT_NODE_KEY": "25a9d70c-d2ec-43bf-a629-ed16fdd62f28"
+}
+
+### Alert 2 - PSA-003
+POST http://localhost:4004/psa/AlertSrv
+Content-Type: application/json
+
+{
+  "THRESHOLD": 80,
+  "CONSUMED_PERCENT": 85,
+  "MESSAGE": "Analytics Platform has exceeded 80% of its budget.",
+  "PROJECT_NODE_KEY": "77baa8ff-fe69-40a3-bfbc-6f57ff72d203"
+}
+
+
+
+### Verify invoices
+GET http://localhost:4004/psa/InvoiceSrv?$select=NODE_KEY,INVOICE_NO,NET_AMOUNT,TAX_AMOUNT,GROSS_AMOUNT,CURRENCY,STATUS
+
+### Verify alerts
+GET http://localhost:4004/psa/AlertSrv?$select=NODE_KEY,THRESHOLD,CONSUMED_PERCENT,MESSAGE
+
+
+### Check PSA-001 budget association
+GET http://localhost:4004/psa/ProjectSrv(25a9d70c-d2ec-43bf-a629-ed16fdd62f28)?$expand=BUDGET
+
+
+###
+GET http://localhost:4004/psa/$metadata
+
+###
+GET http://localhost:4004/psa/ProjectSrv(25a9d70c-d2ec-43bf-a629-ed16fdd62f28)/BUDGET?$select=NODE_KEY,BUDGET_AMOUNT,BILLING_RATE,RETAINER_FEE,CURRENCY_CODE,CONSUMED_AMOUNT,REMAINING_AMOUNT,BUDGET_STATUS
+
+
+### Get Employees with Manager Information
+GET http://localhost:4004/psa/EmployeeSrv?$select=FIRST_NAME,LAST_NAME,MANAGER_NODE_KEY&$expand=MANAGER($select=FIRST_NAME,LAST_NAME)
+Accept: application/json
+
+
+### Assign Ravi Kumar as the top-level manager
+### Ravi has no manager, so no update is required for Ravi.
+
+### Assign Ravi Kumar as Priya Sharma's manager
+PATCH http://localhost:4004/psa/EmployeeSrv(45ce660d-2ecb-4fa3-8887-0a81121a2bd5)
+Content-Type: application/json
+Accept: application/json
+
+{
+  "MANAGER_NODE_KEY": "1360343d-1c2d-4466-a93b-f13df914a81f"
+}
+
+###
+
+### Assign Ravi Kumar as Arjun Rao's manager
+PATCH http://localhost:4004/psa/EmployeeSrv(dfc95aed-a852-406e-b98f-751b30118b2c)
+Content-Type: application/json
+Accept: application/json
+
+{
+  "MANAGER_NODE_KEY": "1360343d-1c2d-4466-a93b-f13df914a81f"
+}
+
+### Verify employee manager assignments
+GET http://localhost:4004/psa/EmployeeSrv?$select=FIRST_NAME,LAST_NAME,MANAGER_NODE_KEY&$expand=MANAGER($select=FIRST_NAME,LAST_NAME)
+Accept: application/json
+
+### Get Tasks with Milestone and Assignee IDs
+GET http://localhost:4004/psa/TaskSrv?$select=NODE_KEY,TASK_NAME,STATUS,MILESTONE_NODE_KEY,ASSIGNEE_NODE_KEY,PROJECT_CODE,CRITICALITY
+Accept: application/json
+
+### Get Milestones with Project IDs
+GET http://localhost:4004/psa/MilestoneSrv?$select=NODE_KEY,MILESTONE_NAME,PROJECT_NODE_KEY
+Accept: application/json
+
+### Get Projects
+GET http://localhost:4004/psa/ProjectSrv?$select=NODE_KEY,PROJECT_CODE,PROJECT_NAME
+Accept: application/json
+
+
+### Test task project code
+GET http://localhost:4004/psa/TaskSrv?$select=NODE_KEY,TASK_NAME,PROJECT_CODE
+Accept: application/json
+
+### Check TaskSrv metadata for virtual fields
+GET http://localhost:4004/psa/$metadata
+Accept: application/xml
+
+### Test PROJECT_CODE in TaskSrv
+GET http://localhost:4004/psa/TaskSrv?$select=NODE_KEY,TASK_NAME,PROJECT_CODE
+Accept: application/json
+
+### Test TaskSrv without select
+GET http://localhost:4004/psa/TaskSrv
+Accept: application/json
+
+### Check TaskSrv milestone foreign key
+GET http://localhost:4004/psa/TaskSrv?$select=NODE_KEY,TASK_NAME,MILESTONE_NODE_KEY
+Accept: application/json
+
+### Check virtual Project Code
+GET http://localhost:4004/psa/TaskSrv?$select=NODE_KEY,TASK_NAME,PROJECT_CODE
+Accept: application/json
+
+###
+GET http://localhost:4004/psa/TaskSrv?$select=NODE_KEY,TASK_NAME,PROJECT_CODE
+Accept: application/json
+
+###
+GET http://localhost:4004/psa/TaskSrv?$select=NODE_KEY,TASK_NAME,PROJECT_CODE
+Accept: application/json
+
+
+### Verify Timesheets
+GET http://localhost:4004/psa/TimesheetSrv
+Accept: application/json

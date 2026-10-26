@@ -1,0 +1,557 @@
+
+<mvc:View
+    controllerName="psaa.home.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:tnt="sap.tnt"
+    xmlns:layout="sap.ui.layout"
+    displayBlock="true">
+
+    <tnt:ToolPage id="managerToolPage" sideExpanded="true">
+
+        <!-- SIDEBAR -->
+        <tnt:sideContent>
+            <tnt:SideNavigation
+                id="managerSideNavigation"
+                selectedKey="dashboard"
+                itemSelect="onNavigationSelect">
+
+                <tnt:NavigationList id="managerNavigationList">
+                    <tnt:NavigationListItem
+                        id="navDashboard"
+                        key="dashboard"
+                        text="Dashboard"
+                        icon="sap-icon://home"/>
+
+                    <tnt:NavigationListItem
+                        id="navProjects"
+                        key="projects"
+                        text="Projects"
+                        icon="sap-icon://folder-full"/>
+
+                    <tnt:NavigationListItem
+                        id="navClients"
+                        key="clients"
+                        text="Clients"
+                        icon="sap-icon://customer"/>
+
+                    <tnt:NavigationListItem
+                        id="navEmployees"
+                        key="employees"
+                        text="Employees"
+                        icon="sap-icon://group"/>
+
+                    <tnt:NavigationListItem
+                        id="navTimesheets"
+                        key="timesheets"
+                        text="Timesheets"
+                        icon="sap-icon://history"/>
+
+                    <tnt:NavigationListItem
+                        id="navApprovals"
+                        key="approvals"
+                        text="Timesheet Approvals"
+                        icon="sap-icon://task"/>
+
+                    <tnt:NavigationListItem
+                        id="navTasks"
+                        key="tasks"
+                        text="Tasks"
+                        icon="sap-icon://checklist"/>
+
+                    <tnt:NavigationListItem
+                        id="navMilestones"
+                        key="milestones"
+                        text="Milestones"
+                        icon="sap-icon://flag"/>
+
+                    <tnt:NavigationListItem
+                        id="navBudgets"
+                        key="budgets"
+                        text="Budgets"
+                        icon="sap-icon://money-bills"/>
+
+                    <tnt:NavigationListItem
+                        id="navInvoices"
+                        key="invoices"
+                        text="Invoices"
+                        icon="sap-icon://sales-order"/>
+
+                    <tnt:NavigationListItem
+                        id="navAlerts"
+                        key="alerts"
+                        text="Alerts"
+                        icon="sap-icon://alert"/>
+                </tnt:NavigationList>
+
+                <tnt:fixedItem>
+                    <tnt:NavigationList id="fixedNavigationList">
+                        <tnt:NavigationListItem
+                            id="navRefresh"
+                            key="refresh"
+                            text="Refresh Data"
+                            icon="sap-icon://refresh"/>
+                    </tnt:NavigationList>
+                </tnt:fixedItem>
+
+            </tnt:SideNavigation>
+        </tnt:sideContent>
+
+        <!-- MAIN CONTENT -->
+        <tnt:mainContents>
+            <Page
+                id="managerDashboardPage"
+                showHeader="false"
+                enableScrolling="true"
+                backgroundDesign="List">
+
+                <content>
+                    <VBox
+                        id="dashboardContent"
+                        class="sapUiResponsiveContentPadding"
+                        width="100%">
+
+                        <!-- DASHBOARD HEADER -->
+                        
+<!-- DASHBOARD HEADER -->
+<VBox id="dashboardHeaderContainer" width="100%">
+
+    <OverflowToolbar
+        id="dashboardHeader"
+        design="Transparent"
+        height="4rem">
+
+        <Button
+            id="sidebarToggleButton"
+            icon="sap-icon://menu2"
+            type="Transparent"
+            tooltip="Expand or collapse navigation"
+            press="onToggleSidebar"/>
+
+        <VBox id="dashboardTitleBox">
+            <Title
+                id="dashboardTitle"
+                text="Manager Dashboard"
+                level="H1"/>
+
+            <Text
+                id="dashboardSubtitle"
+                text="Project Service Automation"/>
+        </VBox>
+
+        <ToolbarSpacer id="headerSpacer"/>
+
+        <Button
+            id="refreshDashboardButton"
+            icon="sap-icon://refresh"
+            text="Refresh"
+            type="Transparent"
+            press="onRefresh"/>
+    </OverflowToolbar>
+
+</VBox>
+
+
+                        <!-- CONNECTION STATUS -->
+                        <HBox
+                            id="dashboardStatusBar"
+                            alignItems="Center"
+                            wrap="Wrap"
+                            class="sapUiSmallMarginBottom">
+
+                            <ObjectStatus
+                                id="connectionStatus"
+                                text="{viewModel>/connectionStatus}"
+                                state="{viewModel>/connectionState}"/>
+
+                            <Text
+                                id="lastUpdatedText"
+                                text="{viewModel>/lastUpdated}"
+                                class="sapUiSmallMarginBegin"/>
+                        </HBox>
+
+                        <!-- KPI OVERVIEW -->
+                        <Title
+                            id="overviewTitle"
+                            text="Overview"
+                            level="H2"
+                            class="sapUiSmallMarginTop sapUiSmallMarginBottom"/>
+
+                        <layout:Grid
+                            id="kpiGrid"
+                            defaultSpan="XL2 L4 M6 S12"
+                            hSpacing="1"
+                            vSpacing="1">
+
+                            <layout:content>
+
+                                <!-- ACTIVE PROJECTS -->
+                                <f:Card id="activeProjectsCard">
+                                    <f:content>
+                                        <VBox
+                                            id="activeProjectsBox"
+                                            class="sapUiSmallMargin"
+                                            gap="0.4rem">
+
+                                            <Text
+                                                id="activeProjectsLabel"
+                                                text="Active Projects"/>
+
+                                            <NumericContent
+                                                id="activeProjectsValue"
+                                                value="{viewModel>/kpis/activeProjects}"
+                                                icon="sap-icon://folder-full"
+                                                valueColor="Neutral"
+                                                withMargin="false"/>
+
+                                            <Text
+                                                id="activeProjectsDescription"
+                                                text="Currently in progress"/>
+                                        </VBox>
+                                    </f:content>
+                                </f:Card>
+
+                                <!-- AT-RISK BUDGETS -->
+                                <f:Card id="atRiskBudgetsCard">
+                                    <f:content>
+                                        <VBox
+                                            id="atRiskBudgetsBox"
+                                            class="sapUiSmallMargin"
+                                            gap="0.4rem">
+
+                                            <Text
+                                                id="atRiskBudgetsLabel"
+                                                text="At-Risk Budgets"/>
+
+                                            <NumericContent
+                                                id="atRiskBudgetsValue"
+                                                value="{viewModel>/kpis/atRiskBudgets}"
+                                                icon="sap-icon://alert"
+                                                valueColor="Error"
+                                                withMargin="false"/>
+
+                                            <Text
+                                                id="atRiskBudgetsDescription"
+                                                text="At risk or breached"/>
+                                        </VBox>
+                                    </f:content>
+                                </f:Card>
+
+                                <!-- PENDING APPROVALS -->
+                                <f:Card id="pendingApprovalsCard">
+                                    <f:content>
+                                        <VBox
+                                            id="pendingApprovalsBox"
+                                            class="sapUiSmallMargin"
+                                            gap="0.4rem">
+
+                                            <Text
+                                                id="pendingApprovalsLabel"
+                                                text="Pending Approvals"/>
+
+                                            <NumericContent
+                                                id="pendingApprovalsValue"
+                                                value="{viewModel>/kpis/pendingApprovals}"
+                                                icon="sap-icon://task"
+                                                valueColor="Critical"
+                                                withMargin="false"/>
+
+                                            <Text
+                                                id="pendingApprovalsDescription"
+                                                text="Awaiting manager action"/>
+                                        </VBox>
+                                    </f:content>
+                                </f:Card>
+
+                                <!-- DRAFT INVOICES -->
+                                <f:Card id="draftInvoicesCard">
+                                    <f:content>
+                                        <VBox
+                                            id="draftInvoicesBox"
+                                            class="sapUiSmallMargin"
+                                            gap="0.4rem">
+
+                                            <Text
+                                                id="draftInvoicesLabel"
+                                                text="Draft Invoices"/>
+
+                                            <NumericContent
+                                                id="draftInvoicesValue"
+                                                value="{viewModel>/kpis/draftInvoices}"
+                                                icon="sap-icon://sales-order"
+                                                valueColor="Neutral"
+                                                withMargin="false"/>
+
+                                            <Text
+                                                id="draftInvoicesDescription"
+                                                text="Not yet issued"/>
+                                        </VBox>
+                                    </f:content>
+                                </f:Card>
+
+                                <!-- OVERDUE AMOUNT -->
+                                <f:Card id="overdueAmountCard">
+                                    <f:content>
+                                        <VBox
+                                            id="overdueAmountBox"
+                                            class="sapUiSmallMargin"
+                                            gap="0.4rem">
+
+                                            <Text
+                                                id="overdueAmountLabel"
+                                                text="Overdue Amount"/>
+
+                                            <ObjectNumber
+                                                id="overdueAmountValue"
+                                                number="{viewModel>/kpis/overdueAmount}"
+                                                unit="INR"
+                                                state="Error"/>
+
+                                            <Text
+                                                id="overdueAmountDescription"
+                                                text="Outstanding overdue invoices"
+                                                wrapping="true"/>
+                                        </VBox>
+                                    </f:content>
+                                </f:Card>
+
+                            </layout:content>
+                        </layout:Grid>
+
+                        <!-- PROJECT ANALYTICS HEADER -->
+                        <OverflowToolbar
+                            id="projectAnalyticsToolbar"
+                            class="sapUiMediumMarginTop"
+                            design="Transparent">
+
+                            <Title
+                                id="projectAnalyticsTitle"
+                                text="Project Analytics"
+                                level="H2"/>
+
+                            <ToolbarSpacer id="projectToolbarSpacer"/>
+
+                            <Button
+                                id="createProjectButton"
+                                text="Create Project"
+                                icon="sap-icon://add"
+                                type="Emphasized"
+                                press="onCreateProject"/>
+                        </OverflowToolbar>
+
+                        <!-- PROJECT ANALYTICS TABLE -->
+                        <f:Card
+                            id="projectAnalyticsCard"
+                            class="sapUiSmallMarginBottom">
+
+                            <f:content>
+                                <VBox
+                                    id="projectAnalyticsContent"
+                                    class="sapUiSmallMargin">
+
+                                    <!-- SEARCH AND FILTER -->
+                                    <HBox
+                                        id="projectFilterBar"
+                                        wrap="Wrap"
+                                        alignItems="Center"
+                                        class="sapUiSmallMarginBottom"
+                                        gap="0.5rem">
+
+                                        <SearchField
+                                            id="projectSearchField"
+                                            width="20rem"
+                                            placeholder="Search project code or name"
+                                            liveChange="onProjectSearch"/>
+
+                                        <Select
+                                            id="projectStatusFilter"
+                                            width="12rem"
+                                            selectedKey="ALL"
+                                            change="onProjectStatusChange">
+
+                                            <items>
+                                                <core:Item
+                                                    id="filterAllStatuses"
+                                                    key="ALL"
+                                                    text="All statuses"/>
+
+                                                <core:Item
+                                                    id="filterActive"
+                                                    key="ACTIVE"
+                                                    text="Active"/>
+
+                                                <core:Item
+                                                    id="filterDraft"
+                                                    key="DRAFT"
+                                                    text="Draft"/>
+
+                                                <core:Item
+                                                    id="filterOnHold"
+                                                    key="ON_HOLD"
+                                                    text="On Hold"/>
+
+                                                <core:Item
+                                                    id="filterCompleted"
+                                                    key="COMPLETED"
+                                                    text="Completed"/>
+
+                                                <core:Item
+                                                    id="filterCancelled"
+                                                    key="CANCELLED"
+                                                    text="Cancelled"/>
+                                            </items>
+                                        </Select>
+
+                                        <ToolbarSpacer id="projectCountSpacer"/>
+
+                                        <Text
+                                            id="projectCountText"
+                                            text="{viewModel>/projectCount} projects"/>
+                                    </HBox>
+
+                                    <!-- PROJECT TABLE -->
+                                    <Table
+                                        id="projectsTable"
+                                        items="{viewModel>/projects}"
+                                        mode="None"
+                                        growing="true"
+                                        growingScrollToLoad="true"
+                                        noDataText="No projects found">
+
+                                        <columns>
+                                            <Column id="projectCodeColumn">
+                                                <Text
+                                                    id="projectCodeColumnLabel"
+                                                    text="Code"/>
+                                            </Column>
+
+                                            <Column id="projectNameColumn">
+                                                <Text
+                                                    id="projectNameColumnLabel"
+                                                    text="Project"/>
+                                            </Column>
+
+                                            <Column
+                                                id="projectClientColumn"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true">
+                                                <Text
+                                                    id="projectClientColumnLabel"
+                                                    text="Client"/>
+                                            </Column>
+
+                                            <Column
+                                                id="projectBillingColumn"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true">
+                                                <Text
+                                                    id="projectBillingColumnLabel"
+                                                    text="Billing"/>
+                                            </Column>
+
+                                            <Column id="projectStatusColumn">
+                                                <Text
+                                                    id="projectStatusColumnLabel"
+                                                    text="Status"/>
+                                            </Column>
+
+                                            <Column
+                                                id="projectConsumedHoursColumn"
+                                                hAlign="End"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true">
+                                                <Text
+                                                    id="projectConsumedHoursColumnLabel"
+                                                    text="Consumed Hours"/>
+                                            </Column>
+
+                                            
+<Column id="projectBudgetBurnColumn">
+    <Text
+        id="projectBudgetBurnColumnLabel"
+        text="Budget Burn"/>
+</Column>
+
+
+                                            <Column
+                                                id="projectActionColumn"
+                                                hAlign="Center"
+                                                width="4rem">
+                                                <Text
+                                                    id="projectActionColumnLabel"
+                                                    text="Open"/>
+                                            </Column>
+                                        </columns>
+
+                                        <items>
+                                            
+<ColumnListItem
+    id="projectRow"
+    type="Inactive">
+                                                
+<cells>
+    <ObjectIdentifier
+        id="projectCodeIdentifier"
+        title="{viewModel>code}"/>
+
+    <Text
+        id="projectNameText"
+        text="{viewModel>name}"
+        wrapping="true"/>
+
+    <Text
+        id="projectClientText"
+        text="{viewModel>clientName}"/>
+
+    <Text
+        id="projectBillingText"
+        text="{viewModel>billingType}"/>
+
+    <ObjectStatus
+        id="projectStatusObject"
+        text="{viewModel>status}"
+        state="{viewModel>statusState}"/>
+
+    <Text
+        id="projectConsumedHoursValue"
+        text="{viewModel>consumedHours}"/>
+
+    <VBox
+        id="projectBudgetBurnBox"
+        width="8rem">
+
+        <Text
+            id="projectBudgetBurnText"
+            text="{viewModel>budgetBurnText}"/>
+
+        <ProgressIndicator
+            id="projectBudgetBurnIndicator"
+            percentValue="{viewModel>budgetBurn}"
+            displayValue=""
+            state="{viewModel>budgetBurnState}"
+            width="100%"/>
+    </VBox>
+
+    <Button
+        id="openProjectButton"
+        icon="sap-icon://slim-arrow-right"
+        type="Transparent"
+        tooltip="Open project"
+        press="onProjectOpen"/>
+</cells>
+
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </VBox>
+                            </f:content>
+                        </f:Card>
+
+                    </VBox>
+                </content>
+            </Page>
+        </tnt:mainContents>
+    </tnt:ToolPage>
+</mvc:View>

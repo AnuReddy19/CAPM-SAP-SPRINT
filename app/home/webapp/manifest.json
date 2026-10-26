@@ -1,0 +1,129 @@
+{
+  "_version": "1.89.0",
+  "sap.app": {
+    "id": "psaa.home",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.33.0",
+      "toolsId": "caee5209-6349-4d10-ac77-b03ce9d9c1fb"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/psa/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.153.0",
+      "libs": {
+    "sap.m": {},
+    "sap.ui.core": {},
+    "sap.f": {},
+    "sap.tnt": {},
+    "sap.ui.layout": {}
+}
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "psaa.home.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "psaa.home.view",
+        "async": true,
+        "viewPath": "psaa.home.view"
+      },
+      
+"routes": [
+    {
+        "name": "RouteHome",
+        "pattern": ":?query:",
+        "target": ["TargetHome"]
+    },
+    {
+        "name": "RouteModule",
+        "pattern": "module/{page}",
+        "target": ["TargetModule"]
+    }
+],
+"targets": {
+    "TargetHome": {
+        "id": "Home",
+        "name": "Home"
+    },
+    "TargetModule": {
+        "id": "Module",
+        "name": "Module"
+    }
+}
+
+    },
+    "rootView": {
+      "viewName": "psaa.home.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}

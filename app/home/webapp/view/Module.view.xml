@@ -1,0 +1,148 @@
+
+<mvc:View
+    controllerName="psaa.home.controller.Module"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page
+        id="modulePage"
+        showNavButton="true"
+        navButtonPress="onBackToDashboard"
+        title="{moduleModel>/title}"
+        enableScrolling="true">
+
+        <content>
+            <VBox
+                id="moduleContent"
+                width="100%"
+                class="sapUiResponsiveContentPadding">
+
+                <OverflowToolbar id="moduleHeaderToolbar">
+                    <Title
+                        id="moduleHeading"
+                        text="{moduleModel>/title}"
+                        level="H2"/>
+
+                    <ToolbarSpacer id="moduleHeaderSpacer"/>
+
+                    <Button
+                        id="moduleRefreshButton"
+                        text="Refresh"
+                        icon="sap-icon://refresh"
+                        press="onRefreshModule"/>
+                </OverflowToolbar>
+
+                <Text
+                    id="moduleDescription"
+                    text="{moduleModel>/description}"
+                    class="sapUiSmallMarginBottom"/>
+
+                <MessageStrip
+                    id="moduleInformation"
+                    text="{moduleModel>/message}"
+                    type="Information"
+                    showIcon="true"
+                    visible="{moduleModel>/showMessage}"
+                    class="sapUiSmallMarginBottom"/>
+
+                <SearchField
+                    id="moduleSearchField"
+                    width="100%"
+                    placeholder="Search records"
+                    liveChange="onModuleSearch"
+                    class="sapUiSmallMarginBottom"/>
+
+                <Toolbar id="moduleTableToolbar">
+                    <Title
+                        id="moduleTableHeading"
+                        text="{moduleModel>/tableTitle}"
+                        level="H3"/>
+
+                    <ToolbarSpacer id="moduleTableSpacer"/>
+
+                    <ObjectStatus
+                        id="moduleRecordCount"
+                        text="{moduleModel>/recordCount} records"/>
+                </Toolbar>
+
+                <Table
+                    id="moduleTable"
+                    items="{moduleModel>/items}"
+                    growing="true"
+                    growingScrollToLoad="true"
+                    noDataText="No records found"
+                    busy="{moduleModel>/loading}"
+                    sticky="ColumnHeaders">
+
+                    <columns>
+                        <Column id="moduleColumn1" visible="{moduleModel>/columns/0/visible}">
+                            <Text id="moduleColumnLabel1" text="{moduleModel>/columns/0/label}"/>
+                        </Column>
+
+                        <Column id="moduleColumn2" visible="{moduleModel>/columns/1/visible}">
+                            <Text id="moduleColumnLabel2" text="{moduleModel>/columns/1/label}"/>
+                        </Column>
+
+                        <Column id="moduleColumn3" visible="{moduleModel>/columns/2/visible}">
+                            <Text id="moduleColumnLabel3" text="{moduleModel>/columns/2/label}"/>
+                        </Column>
+
+                        <Column id="moduleColumn4" visible="{moduleModel>/columns/3/visible}">
+                            <Text id="moduleColumnLabel4" text="{moduleModel>/columns/3/label}"/>
+                        </Column>
+
+                        <Column id="moduleColumn5" visible="{moduleModel>/columns/4/visible}">
+                            <Text id="moduleColumnLabel5" text="{moduleModel>/columns/4/label}"/>
+                        </Column>
+
+                        <Column id="moduleColumn6" visible="{moduleModel>/columns/5/visible}">
+                            <Text id="moduleColumnLabel6" text="{moduleModel>/columns/5/label}"/>
+                        </Column>
+
+                        <Column id="moduleColumn7" visible="{moduleModel>/isApprovals}" width="15rem">
+                            <Text id="approvalActionsLabel" text="Decision"/>
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem id="moduleRow">
+                            <cells>
+                                <Text id="moduleCell1" text="{moduleModel>field1}" wrapping="true"/>
+                                <Text id="moduleCell2" text="{moduleModel>field2}" wrapping="true"/>
+                                <Text id="moduleCell3" text="{moduleModel>field3}" wrapping="true"/>
+                                <Text id="moduleCell4" text="{moduleModel>field4}" wrapping="true"/>
+                                <Text id="moduleCell5" text="{moduleModel>field5}" wrapping="true"/>
+                                <Text id="moduleCell6" text="{moduleModel>field6}" wrapping="true"/>
+
+                                <HBox
+                                    id="approvalActionsBox"
+                                    alignItems="Center"
+                                    visible="{= ${moduleModel>/isApprovals} }"
+                                    wrap="Wrap"
+                                    gap="0.5rem">
+
+                                    <Button
+                                        id="acceptTimesheetButton"
+                                        text="Accept"
+                                        icon="sap-icon://accept"
+                                        type="Accept"
+                                        press="onAcceptTimesheet"/>
+
+                                    <Button
+                                        id="rejectTimesheetButton"
+                                        text="Reject"
+                                        icon="sap-icon://decline"
+                                        type="Reject"
+                                        press="onRejectTimesheet"/>
+                                </HBox>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

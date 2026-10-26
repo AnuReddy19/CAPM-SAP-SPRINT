@@ -1,0 +1,50 @@
+{
+  "name": "psaa",
+  "version": "1.0.0",
+  "description": "Welcome to your new CAP project.",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cds-serve",
+    "watch-clients": "cds watch --open psaa.clients/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-home": "cds watch --open psaa.home/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-projects": "cds watch --open psaa.projects/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-employees": "cds watch --open psaa.employees/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-timesheets": "cds watch --open psaa.timesheets/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-tasks": "cds watch --open psaa.tasks/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-budgets": "cds watch --open psaa.budgets/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-approvals": "cds watch --open psaa.approvals/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-milestones": "cds watch --open psaa.milestones/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-invoices": "cds watch --open psaa.invoices/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-alerts": "cds watch --open psaa.alerts/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "dependencies": {
+    "@cap-js/hana": "^3",
+    "@sap/cds": "^10.2.1",
+    "@sap/xssec": "^4.15.0"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^3.1.2",
+    "@sap/cds-dk": "^10.2.0",
+    "cds-plugin-ui5": "^0.17.0"
+  },
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/clients",
+    "app/projects",
+    "app/employees",
+    "app/timesheets",
+    "app/tasks",
+    "app/budgets",
+    "app/approvals",
+    "app/milestones",
+    "app/invoices",
+    "app/alerts"
+  ]
+}
